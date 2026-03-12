@@ -172,4 +172,4 @@ Este proyecto es para fines demostrativos de portafolio.
 ---
 
 **Desarrollado con ❤️ y ☕ por Victor Zamora**
-[Enlace a tu LinkedIn] | [Enlace a tu Web Personal]
+[\[Mi perfil de LinkedIn\]](https://www.linkedin.com/in/victor-ernesto-zamora-8217b8323/) | web personal en desarrollo
