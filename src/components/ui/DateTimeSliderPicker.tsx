@@ -18,7 +18,12 @@ export const DateTimeSliderPicker: React.FC<DateTimeSliderPickerProps> = ({
   const updateField = useWizardStore((state) => state.updateField);
 
   // Usamos useState para fijar la fecha por defecto al montar el componente y evitar que cambie en cada render
-  const [defaultDate] = useState(() => new Date());
+  const [defaultDate] = useState(() => {
+    const now = new Date();
+    const roundedMinutes = Math.floor(now.getMinutes() / 5) * 5;
+    now.setMinutes(roundedMinutes, 0, 0);
+    return now;
+  });
   const dateObj = value ? new Date(value) : defaultDate;
   const validDate = !isNaN(dateObj.getTime()) ? dateObj : defaultDate;
 
@@ -29,7 +34,8 @@ export const DateTimeSliderPicker: React.FC<DateTimeSliderPickerProps> = ({
   const datePart = `${year}-${month}-${day}`;
 
   const hours = validDate.getHours();
-  const minutes = validDate.getMinutes();
+  // Forzamos visualmente el redondeo a 5 minutos, incluso si el valor guardado es diferente
+  const minutes = Math.floor(validDate.getMinutes() / 5) * 5;
 
   const update = (dStr: string, h: number, m: number) => {
     const hh = String(h).padStart(2, "0");

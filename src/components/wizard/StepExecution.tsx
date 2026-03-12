@@ -99,6 +99,12 @@ export const StepExecution: React.FC = () => {
 
         const siteId = extractSiteId(data.targetDeviceAlias || "") || "";
 
+        // Calcular registros necesarios para forzar intervalos de ~5 minutos (300,000 ms)
+        const records = Math.max(
+          2,
+          Math.floor(durationMs / (5 * 60 * 1000)) + 1,
+        );
+
         // 2. Consultar API
         const response = await fetchSisproChartData({
           equipo: data.targetDeviceId,
@@ -107,6 +113,7 @@ export const StepExecution: React.FC = () => {
           ref: siteId,
           startDate: formatDate(startSource),
           endDate: formatDate(endSource),
+          records,
         });
 
         // 3. Aplicar Desfase de Tiempo (Time Shift) a los resultados
