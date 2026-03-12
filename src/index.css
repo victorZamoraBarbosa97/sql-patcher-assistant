@@ -1,0 +1,75 @@
+/* src/index.css */
+@import "tailwindcss";
+
+@theme {
+  /* Tipografías */
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", monospace;
+
+  /* Colores mapeados a tus variables CSS */
+  --color-background: var(--bg-main);
+  --color-card: var(--bg-card);
+
+  --color-primary: var(--action-primary);
+  --color-primary-hover: var(--action-primary-hover);
+
+  --color-accent: var(--accent-code);
+  --color-success: var(--status-success);
+  --color-error: var(--status-error);
+
+  --color-text-main: var(--text-main);
+  --color-text-secondary: var(--text-secondary);
+
+  --color-border: var(--border-color);
+  --color-input: var(--bg-input);
+
+  /* Sombras */
+  --shadow-soft:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+@layer base {
+  :root {
+    /* ☀️ Tema Claro (Light Mode) */
+    --bg-main: #f8fafc; /* Slate 50 */
+    --bg-card: #ffffff; /* Blanco Puro */
+    --bg-input: #f8fafc; /* Slate 50 (para inputs dentro de cards blancas) */
+    --border-color: #e2e8f0; /* Slate 200 */
+
+    --text-main: #0f172a; /* Slate 900 */
+    --text-secondary: #64748b; /* Slate 500 */
+
+    --action-primary: #2563eb; /* Blue 600 */
+    --action-primary-hover: #1d4ed8; /* Blue 700 (aprox para hover) */
+
+    --accent-code: #0369a1; /* Sky 700 */
+
+    --status-success: #059669; /* Emerald 600 */
+    --status-error: #dc2626; /* Red 600 */
+  }
+
+  .dark {
+    /* 🌑 Tema Oscuro (Dark Mode) */
+    --bg-main: #0f172a; /* Slate 900 */
+    --bg-card: #1e293b; /* Slate 800 */
+    --bg-input: #0f172a; /* Slate 900 (para inputs dentro de cards oscuras) */
+    --border-color: #334155; /* Slate 700 */
+
+    --text-main: #f8fafc; /* Slate 50 */
+    --text-secondary: #94a3b8; /* Slate 400 */
+
+    --action-primary: #3b82f6; /* Blue 500 */
+    --action-primary-hover: #2563eb; /* Blue 600 */
+
+    --accent-code: #7dd3fc; /* Sky 300 */
+
+    --status-success: #10b981; /* Emerald 500 */
+    --status-error: #ef4444; /* Red 500 */
+  }
+
+  body {
+    @apply font-sans antialiased transition-colors duration-200;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+  }
+}
