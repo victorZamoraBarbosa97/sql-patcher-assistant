@@ -45,19 +45,16 @@ interface WizardState {
   reset: () => void;
 }
 
-export const useWizardStore = create<WizardState>()(
-  devtools(
-    // 2. Envolver la definición del store
+export const useWizardStore = create(
+  devtools<WizardState>(
     (set) => ({
       currentStep: 1,
       data: initialData,
       setCurrentStep: (step) => set({ currentStep: step }),
       updateField: (field, value) =>
-        set((state) => ({
-          data: { ...state.data, [field]: value },
-        })),
+        set((state) => ({ data: { ...state.data, [field]: value } })),
       reset: () => set({ currentStep: 1, data: initialData }),
     }),
-    { name: "WizardStore" }, // 3. Opcional: Nombre que aparecerá en la extensión
+    { name: "WizardStore" },
   ),
 );

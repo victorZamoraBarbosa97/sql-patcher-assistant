@@ -172,6 +172,8 @@ export const BandwidthChartModal: React.FC<BandwidthChartModalProps> = ({
       siteId,
       getDates,
       initialData.estimatedRecords,
+      initialData.startDate,
+      initialData.endDate,
     ],
   );
 

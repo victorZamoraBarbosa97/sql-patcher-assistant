@@ -96,6 +96,11 @@ export const IdentificationSection: React.FC<IdentificationSectionProps> = ({
     string | null | undefined
   >;
 
+  // Extraemos los valores específicos para usarlos como dependencias estables
+  const currentIp = (data[fields.ip] as string) || "";
+  const currentAlias = (data[fields.alias] as string) || "";
+  const currentProject = (data[fields.project] as string) || "";
+
   const handleGenerateQuery = () => {
     const query = generateIdentificationQuery(
       (data[fields.ip] as string) || "",
@@ -130,20 +135,19 @@ export const IdentificationSection: React.FC<IdentificationSectionProps> = ({
         // --- VALIDACIONES DE SEGURIDAD ---
         // 1. Validar IP
         const detectedIp = parsed[findKey("IP") || ""];
-        const inputIp = (data[fields.ip] as string) || "";
         if (
           detectedIp &&
-          inputIp &&
-          String(detectedIp).trim() !== inputIp.trim()
+          currentIp &&
+          String(detectedIp).trim() !== currentIp.trim()
         ) {
           throw new Error(
-            `Conflicto de IP: El resultado pertenece a ${detectedIp}, pero se buscó ${inputIp}.`,
+            `Conflicto de IP: El resultado pertenece a ${detectedIp}, pero se buscó ${currentIp}.`,
           );
         }
 
         // 2. Validar Proyecto
         const detectedProject = parsed[findKey("PROJECT_ID") || ""];
-        let inputProject = (data[fields.project] as string) || "";
+        let inputProject = currentProject;
 
         // Normalizar: Si el usuario seleccionó un nombre (ej: PROYECTO_ALPHA), convertimos al ID esperado (ej: 1)
         if (PROJECT_IDS[inputProject]) {
@@ -156,26 +160,25 @@ export const IdentificationSection: React.FC<IdentificationSectionProps> = ({
           String(detectedProject).trim() !== inputProject.trim()
         ) {
           throw new Error(
-            `Conflicto de Proyecto: El resultado indica ID ${detectedProject}, pero se buscó ${data[fields.project]} (ID ${inputProject}).`,
+            `Conflicto de Proyecto: El resultado indica ID ${detectedProject}, pero se buscó ${currentProject} (ID ${inputProject}).`,
           );
         }
 
         // 3. Validar Interfaz (Búsqueda flexible)
-        const inputAlias = (data[fields.alias] as string) || "";
         const nameMatch =
           interfaceName &&
           String(interfaceName)
             .toLowerCase()
-            .includes(inputAlias.toLowerCase());
+            .includes(currentAlias.toLowerCase());
         const aliasMatch =
           interfaceAlias &&
           String(interfaceAlias)
             .toLowerCase()
-            .includes(inputAlias.toLowerCase());
+            .includes(currentAlias.toLowerCase());
 
-        if (inputAlias && !nameMatch && !aliasMatch) {
+        if (currentAlias && !nameMatch && !aliasMatch) {
           throw new Error(
-            `Conflicto de Interfaz: El término "${inputAlias}" no aparece en el nombre ni alias del resultado.`,
+            `Conflicto de Interfaz: El término "${currentAlias}" no aparece en el nombre ni alias del resultado.`,
           );
         }
         // ---------------------------------
@@ -201,8 +204,14 @@ export const IdentificationSection: React.FC<IdentificationSectionProps> = ({
       }
     }, 500); // Debounce de 500ms
     return () => clearTimeout(timer);
-  }, [pasteContent, updateField, fields, data]);
-  // }, [pasteContent, updateField, fields, data[fields.alias], data[fields.ip], data[fields.project]]);
+  }, [
+    pasteContent,
+    updateField,
+    fields,
+    currentIp,
+    currentAlias,
+    currentProject,
+  ]);
 
   const handleInsertMockData = () => {
     const currentIp = (data[fields.ip] as string) || "192.168.1.10"; // IP genérica para demo
